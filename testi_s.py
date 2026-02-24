@@ -1,2 +1,5 @@
 #testi
-print("Testi")
+def testi():
+    return print("Testi")
+
+testi()
