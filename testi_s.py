@@ -1,5 +1,3 @@
 #testi
 def testi():
-    return print("Testi")
-
-testi()
+    print("Testi toimii")
