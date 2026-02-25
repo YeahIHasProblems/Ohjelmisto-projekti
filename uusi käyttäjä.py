@@ -18,9 +18,9 @@ def register():
     if users_olemassa(käyttäjänimi):
         print("Käyttäjä on jo olemassa")
         return
-    salasana = input(" Anna uusi salasana: ")
+    Salasana = input(" Anna uusi salasana: ")
     with open(user_file, 'a') as f:
-        f.write(f"{käyttäjänimi}:{hash_salasana(salasana)}\n")
+        f.write(f"{käyttäjänimi}:{hash_salasana(Salasana)}\n")
         print("Rekisteröidytty onnistuneesti")
 
 def login():
