@@ -1,6 +1,6 @@
 import mysql.connector
 
-# 1. Create the connection first so the function can use it
+
 yhteys = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
