@@ -15,7 +15,7 @@ def laskuri():
             mult += {rivi[1]}
             xmult = xmult*{rivi[2]}
         tulos = score*mult*xmult
-    return
+    return tulos
 
 
 yhteys = mysql.connector.connect(
