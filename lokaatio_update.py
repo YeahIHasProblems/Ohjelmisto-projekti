@@ -31,5 +31,6 @@ def hae_nykyinen_sijainti(pelaaja):
 
 
 
+
 pelaajan_nimi = "Vesa"
 nykyinen_koodi = hae_nykyinen_sijainti(pelaajan_nimi)
