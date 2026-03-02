@@ -1,6 +1,6 @@
 import mysql.connector
 
-
+# Your existing connection
 yhteys = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -10,31 +10,27 @@ yhteys = mysql.connector.connect(
     autocommit=True
 )
 
-def paivita_lokaatio(pelaaja, uusi_ident):
 
+def hae_nykyinen_sijainti(pelaaja):
     kursori = yhteys.cursor()
 
-    sql = "UPDATE game SET location = %s WHERE screen_name = %s"
-    kursori.execute(sql, (uusi_ident, pelaaja))
-    kursori.close()
 
-def pelaajan_lokaatio(pelaaja):
+    sql = f"""SELECT airport.name, airport.ident  FROM airport, game WHERE airport.ident = game.location AND game.screen_name = '{pelaaja}' """
 
-    sql = f"SELECT name FROM airport, game WHERE airport.ident = game.location AND screen_name = '{pelaaja}'"
-    kursori = yhteys.cursor()
     kursori.execute(sql)
-    tulos = kursori.fetchall()
-    if kursori.rowcount > 0:
-        for rivi in tulos:
-            print(f"Pelaaja {pelaaja} on nyt paikassa: {rivi[0]}")
-    kursori.close()
+    tulos = kursori.fetchone()
 
-# --- Testaus ---
-nimi = "Vesa"
-uusi_kentta = "EFHK" # Esimerkki: Helsinki-Vantaa
+    if tulos:
+        nimi, koodi = tulos
+        print(f"Pelaaja {pelaaja} on tällä hetkellä paikassa: {nimi} ({koodi})")
+        return koodi
+    else:
+        print(f"Pelaajaa {pelaaja} ei löytynyt tai sijaintia ei ole asetettu.")
+        return None
 
-# 1. Päivitetään paikka
-paivita_lokaatio(nimi, uusi_kentta)
 
-# 2. Tarkistetaan uusi nimi tulostamalla se
-pelaajan_lokaatio(nimi)
+
+
+
+pelaajan_nimi = "Vesa"
+nykyinen_koodi = hae_nykyinen_sijainti(pelaajan_nimi)
