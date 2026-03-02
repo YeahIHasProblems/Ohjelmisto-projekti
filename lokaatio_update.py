@@ -1,6 +1,6 @@
 import mysql.connector
 
-# Your existing connection
+
 yhteys = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -15,7 +15,7 @@ def hae_nykyinen_sijainti(pelaaja):
     kursori = yhteys.cursor()
 
 
-    sql = f"""SELECT airport.name, airport.ident  FROM airport, game WHERE airport.ident = game.location AND game.screen_name = '{pelaaja}' """
+    sql = f"SELECT airport.name, airport.ident  FROM airport, game WHERE airport.ident = game.location AND game.screen_name = '{pelaaja}' "
 
     kursori.execute(sql)
     tulos = kursori.fetchone()
@@ -27,7 +27,6 @@ def hae_nykyinen_sijainti(pelaaja):
     else:
         print(f"Pelaajaa {pelaaja} ei löytynyt tai sijaintia ei ole asetettu.")
         return None
-
 
 
 
