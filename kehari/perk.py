@@ -1,21 +1,18 @@
 import mysql.connector
 
 #toivottavasti toimii
-def laskuri():
-    score = 1
-    mult = 1
-    xmult = 1
-    sql = f"SELECT * FROM perks"
+def perk(nimi):
+    sql = f"SELECT * FROM perks WHERE name='{nimi}'"
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchall()
     if kursori.rowcount >0 :
         for rivi in tulos:
-            score += {rivi[1]}
-            mult += {rivi[2]}
-            xmult = xmult*{rivi[3]}
-        tulos = score*mult*xmult
-    return tulos
+            print(f"{rivi[0]}")
+            print(f"{rivi[1]}")
+            print(f"{rivi[2]}")
+            print(f"{rivi[3]}")
+    return
 
 
 yhteys = mysql.connector.connect(
