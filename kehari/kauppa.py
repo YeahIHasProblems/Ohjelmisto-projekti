@@ -1,8 +1,8 @@
 import random
-common = ["samu"]
-rare = ["juuso"]
-epic = ["PetriDimm"]
-supergamble = ["Vesa"]
+common = ["Common1", "Common2", "Common3"]
+rare = ["Rare1", "Rare2", "Rare3"]
+epic = ["Epic1", "Epic2", "Epic3"]
+supergamble = ["Jackpot1", "Jackpot2","Jackpot3"]
 def kauppa():
     jackpot = random.randint(1,100)
     if jackpot > 0 and jackpot < 60:
