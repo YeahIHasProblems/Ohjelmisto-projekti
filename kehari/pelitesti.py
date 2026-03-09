@@ -11,6 +11,10 @@ kauppasecurity = 0
 raha = 1000
 perkvalinta = ""
 perklist = []
+palkka = 0
+palkkastorage = 0
+double = 0
+roll = 0
 common = ["Common1", "Common2", "Common3"]
 rare = ["Rare1", "Rare2", "Rare3"]
 epic = ["Epic1", "Epic2", "Epic3"]
@@ -81,6 +85,22 @@ def perktulostus(perk):
                     f"-------------------------------------------\nNimi: {rivi[0]} Score: {rivi[1]} Mult: {rivi[2]} XMult: {rivi[3]}\n-------------------------------------------")
         return
 
+def laskuri(perklist):
+    score = 0
+    mult = 0
+    xmult = 1
+    for i in perklist:
+        sql = f"SELECT * FROM perks where name = '{i}'"
+        kursori = yhteys.cursor()
+        kursori.execute(sql)
+        tulos = kursori.fetchall()
+        if kursori.rowcount >0 :
+            for rivi in tulos:
+                score += rivi[1]
+                mult += rivi[2]
+                xmult = xmult*rivi[3]
+            tulos = score*mult*xmult
+    return tulos
 
 
 #valikko
@@ -96,21 +116,42 @@ while True:
     if valinta == "1":
         lokaatio = hae_satunnainen_lentokentta()
         lokaatio_update(lokaatio)
-        pelaajan_lokaatio(nimi)
         kierros += 1
-        tavoite += 10
-        print(kierros)
         kauppasecurity = 0
+        palkka = random.randint(5,2000)
+        print("Tuleva palkka on "+ str(palkka))
+        double = int(input("Paina 1, jos haluat yrittää tuplausta"))
+        while double == 1:
+            roll = random.randint(1,2)
+            if roll == 1:
+                palkka = (palkka * 2)
+                print("Tuplaus onnistui, nykyinen palkka on "+ str(palkka))
+            else:
+                palkka = 0
+                print("Tuplaus huti, hävisit kaiken")
+                break
+            double = int(input("Paina 1, jos haluat tuplata uudestaan"))
+        raha += palkka
+        print("Nykyinen rahatilanne: "+ str(raha))
+        pelaajan_lokaatio(nimi)
+        tavoite += laskuri(perklist)
+        print(tavoite)
+
+
+
+
+
     elif valinta == "2" and kauppasecurity == 0:
         while kaupparoll < 3:
             kauppalist.append(kauppa())
-            perktulostus(kauppalist[-1])
+            print(kauppalist[-1])
             kaupparoll += 1
         kauppasecurity += 1
     elif valinta == "3":
         perkvalinta = int(input("Minkä vaihtoehdon haluaisit ostaa"))
         if raha >= 1000:
             perklist.append(kauppalist[perkvalinta-1])
+            raha -= 1000
         else:
             print("Rahat ei riitä")
         print(perklist)
