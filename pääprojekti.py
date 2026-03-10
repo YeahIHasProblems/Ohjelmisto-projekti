@@ -112,7 +112,9 @@ def valikko():
 
 while True:
     valinta = valikko()
-
+    if tavoite >= 1000:
+            print("Voitit pelin")
+            print(f"Sinulla kesti {str(kierros)} kierrosta!")
     if valinta == "1":
         lokaatio = hae_satunnainen_lentokentta()
         lokaatio_update(lokaatio)
@@ -120,7 +122,7 @@ while True:
         kauppasecurity = 0
         palkka = random.randint(5,2000)
         print("Tuleva palkka on "+ str(palkka))
-        double = int(input("Paina 1, jos haluat yrittää tuplausta"))
+        double = int(input("Paina 1 jos haluat tuplata. Paina 0 jos et halua tuplata: "))
         while double == 1:
             roll = random.randint(1,2)
             if roll == 1:
@@ -130,34 +132,10 @@ while True:
                 palkka = 0
                 print("Tuplaus huti, hävisit kaiken")
                 break
-            double = int(input("Paina 1, jos haluat tuplata uudestaan"))
+            double = int(input("Paina 1 jos haluat tuplata uudestaan tai paina 0 jos haluat jatkaa: "))
         raha += palkka
         print("Nykyinen rahatilanne: "+ str(raha))
         pelaajan_lokaatio(nimi)
         if len(perklist)> 0:
             tavoite += laskuri(perklist)
         print(tavoite)
-
-
-
-
-
-    elif valinta == "2" and kauppasecurity == 0:
-        kauppalist.clear()
-        while kaupparoll < 3:
-            kauppalist.append(kauppa())
-            perktulostus(kauppalist[-1])
-            kaupparoll += 1
-    elif valinta == "3":
-        perkvalinta = int(input("Minkä vaihtoehdon haluaisit ostaa"))
-        if raha >= 1000:
-            perklist.append(kauppalist[perkvalinta-1])
-            raha -= 1000
-        else:
-            print("Rahat ei riitä")
-        print(perklist)
-    elif valinta == "4":
-        print("Lopetetaan ohjelma.")
-        break
-    else:
-        print("Virhe")
