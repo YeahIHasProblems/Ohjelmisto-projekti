@@ -45,12 +45,10 @@ def hae_satunnainen_lentokentta():
     return kentta
 
 def lokaatio_update(lokaatio):
-    sql = f"UPDATE game SET location = (SELECT ident FROM airport WHERE name = '{lokaatio}') WHERE screen_name = 'Vesa';"
+    sql = f"UPDATE game SET location = (SELECT ident FROM airport WHERE name = '{lokaatio}') WHERE screen_name = 'Vesa' LIMIT 0;"
     kursori = yhteys.cursor()
     kursori.execute(sql)
-    tulos = kursori.fetchone()
-    return
-
+   
 nimi = "Vesa"
 def pelaajan_lokaatio(pelaaja):
     sql = f"SELECT name FROM airport, game where airport.ident = game.location and screen_name = '{pelaaja}'"
@@ -112,9 +110,6 @@ def valikko():
 
 while True:
     valinta = valikko()
-    if tavoite >= 1000:
-            print("Voitit pelin")
-            print(f"Sinulla kesti {str(kierros)} kierrosta!")
     if valinta == "1":
         lokaatio = hae_satunnainen_lentokentta()
         lokaatio_update(lokaatio)
@@ -138,4 +133,7 @@ while True:
         pelaajan_lokaatio(nimi)
         if len(perklist)> 0:
             tavoite += laskuri(perklist)
-        print(tavoite)
+        if tavoite >= 1000:
+            print("Voitit pelin")
+            print(f"Sinulla kesti {str(kierros)} kierrosta!")
+            break
