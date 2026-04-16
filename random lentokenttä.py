@@ -1,21 +1,14 @@
 import mysql.connector
 
 
-
-
 def hae_satunnainen_lentokentta():
-    sql = f"select airport.name as airport_name, country.name as country_name from airport join country on airport.iso_country = country.iso_country order by rand() limit 1;"
-    print(sql)
+    # Valitaan satunnainen lentokenttä
+    sql = "SELECT name FROM airport ORDER BY RAND() LIMIT 1"
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchone()
-
     if tulos:
-        print(f"Noutopaikka löydetty!")
-        print(f"Lentokenttä: {tulos[0]}")
-        print(f"Maa: {tulos[1]}")
-    else:
-        print("Lentokenttää ei löytynyt.")
+        return tulos[0]
 
 
 yhteys = mysql.connector.connect(
