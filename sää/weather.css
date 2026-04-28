@@ -10,6 +10,9 @@ body {
 }
 
 #weather-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
     background: whitesmoke;
     width: 200px;
     border-radius: 10px;
@@ -46,4 +49,5 @@ nappi {
     width: 100px;
     border-radius: 50%;
     border: 1px solid red;
+
 }
