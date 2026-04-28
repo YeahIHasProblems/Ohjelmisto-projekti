@@ -23,9 +23,9 @@ supergamble = ["Jackpot1", "Jackpot2","Jackpot3"]
 yhteys = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
-         database='flight_game',
-         user='root',
-         password='AdminST',
+         database='lentopeli',
+         user='elviira',
+         password='tattu',
          autocommit=True
          )
 
