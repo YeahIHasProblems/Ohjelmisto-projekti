@@ -29,6 +29,21 @@ const weatherCodeMap = {
     99: ["Thunderstorm With Heavy Hail", "weatherpics/thunderstorm.png"]
 };
 
+var div = document.getElementById("weather-container");
+div.style.display = "none";
+
+var display = 0;
+
+function hideShow() {
+    if(display == 0){
+        div.style.display = "block";
+        display = 1;
+    }
+    else {
+        div.style.display = "none"
+        display = 0;
+    }
+}
 
 const cityInput = document.getElementById("city-input");
 const searchButton = document.getElementById("search-button");
