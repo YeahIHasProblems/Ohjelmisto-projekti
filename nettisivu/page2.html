@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .button {
+        color: silver;
+        padding: 30px 60px;
+        font-size: 40px;
+        display: flex;
+    }
+    .righttext {
+        text-align: left;
+        position: absolute;
+        top: 0;
+        right: 30px;
+        font-size: 40px;
+
+    }
+
+</style>
+<body>
+<button onclick="takaisin()" class ="button" type="button">Takaisin</button>
+<p class="righttext">Score: <br>Raha: <br>Kierrokset: <br></p>
+</body>
+<script>
+    function takaisin() {
+        window.location.href = "userinterface.html"
+    }
+</script>
+</html>
