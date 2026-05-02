@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Kauppa</h2>
+
+{% if session.get("kauppalist") %}
+    <ul>
+    {% for item in session["kauppalist"] %}
+        <li>{{ loop.index }}: {{ item }}</li>
+    {% endfor %}
+    </ul>
+
+    <form method="post" action="{{ url_for('osta_perk') }}">
+        <label>Valitse ostettava perk (1-3):</label>
+        <input type="number" name="index" min="0" max="2">
+        <button type="submit">Osta (1000)</button>
+    </form>
+{% else %}
+    <p>Kauppa on tyhjä. Palaa valikkoon ja avaa kauppa uudestaan.</p>
+{% endif %}
+
+<p><a href="{{ url_for('index') }}">Takaisin valikkoon</a></p>
+{% endblock %}
