@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, session, request
 from pelinlogiikka import hae_satunnainen_lentokentta, kauppa_roll, laskuri
 
 app = Flask(__name__)
-app.secret_key = "supersecret"  # vaihda johonkin omaan
+app.secret_key = "taavoiollamikavaa"
 
 def reset_game():
     session["kierros"] = 0
@@ -40,7 +40,6 @@ def lento():
     if request.method == "POST":
         action = request.form.get("action")
 
-        # Aloita lento
         if action == "start":
             session["lokaatio"] = hae_satunnainen_lentokentta()
             session["palkka"] = random.randint(5, 2000)
@@ -51,7 +50,6 @@ def lento():
             session["kauppasecurity"] = 0
             return redirect(url_for("lento"))
 
-        # Tuplaus
         if action == "double":
             roll = random.randint(1, 2)
             if roll == 1:
@@ -63,7 +61,6 @@ def lento():
                 session["double_active"] = False
             return redirect(url_for("lento"))
 
-        # Lopeta tuplaus
         if action == "stop_double":
             session["raha"] += session["palkka"]
 
@@ -73,7 +70,6 @@ def lento():
             if session["tavoite"] >= 1000:
                 return redirect(url_for("voitto"))
 
-            #Nollaa lentotila
             session["double_active"] = False
             session["double_message"] = ""
             session["lokaatio"] = ""
@@ -118,13 +114,12 @@ def perkit():
 def voitto():
     kierrokset = session.get("kierros", 0)
 
-    # Nollaa peli kokonaan
     reset_game()
 
     return render_template("voitto.html", kierrokset=kierrokset)
 
 
 if __name__ == "__main__":
-    import random  # tarvitaan appissa
+    import random
     app.run(debug=True)
 

@@ -16,12 +16,7 @@ supergamble = ["Jackpot1", "Jackpot2", "Jackpot3"]
 
 
 def hae_satunnainen_lentokentta():
-    sql = """
-        SELECT airport.name 
-        FROM airport 
-        ORDER BY RAND() 
-        LIMIT 1;
-    """
+    sql = """SELECT airport.name FROM airport ORDER BY RAND() LIMIT 1;"""
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchone()
@@ -29,22 +24,13 @@ def hae_satunnainen_lentokentta():
 
 
 def lokaatio_update(lokaatio, pelaaja="Vesa"):
-    sql = """
-        UPDATE game 
-        SET location = (SELECT ident FROM airport WHERE name = %s) 
-        WHERE screen_name = %s;
-    """
+    sql = """UPDATE game SET location = (SELECT ident FROM airport WHERE name = %s) WHERE screen_name = %s;"""
     kursori = yhteys.cursor()
     kursori.execute(sql, (lokaatio, pelaaja))
 
 
 def hae_pelaajan_lokaatio(pelaaja="Vesa"):
-    sql = """
-        SELECT airport.name 
-        FROM airport 
-        JOIN game ON airport.ident = game.location 
-        WHERE screen_name = %s;
-    """
+    sql = """SELECT airport.name FROM airport JOIN game ON airport.ident = game.location WHERE screen_name = %s;"""
     kursori = yhteys.cursor()
     kursori.execute(sql, (pelaaja,))
     tulos = kursori.fetchone()
