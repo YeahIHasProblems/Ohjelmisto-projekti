@@ -11,6 +11,7 @@
             color: #f0e6ff;
             margin: 0;
             padding: 0;
+            background-image: url(/static/water.jpeg);
         }
 
         .container {
@@ -36,11 +37,14 @@
             color: #b6ffe0;
             margin-bottom: 20px;
             text-shadow: 0 0 8px #8affc7;
+            text-align: center;
         }
 
         .cards {
             display: flex;
             gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .card {
@@ -77,6 +81,8 @@
             text-decoration: none;
             font-size: 18px;
             box-shadow: 0 0 10px #1a4d3b;
+            background-image: url(/static/gold.png);
+
         }
 
         .popup-bg {
@@ -142,7 +148,7 @@
             {% endif %}
             <div class="card" onclick="confirmBuy({{ loop.index0 }}, '{{ item }}')">
                 <img src="{{ url_for('static', filename='' + item + '.png') }}"alt="{{ item }}"style="width:100%; border-radius:8px; margin-bottom:10px;">
-                <div class="card-title">{{ item }}</div>
+                <div class="card-title">{{ item }}</div>    
                 <div class="price">{{ price }}$</div>
             </div>
             {% endfor %}
