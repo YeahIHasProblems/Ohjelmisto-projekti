@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Flight Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #111; color: #eee; }
+        a, button { color: #fff; background: #333; padding: 8px 12px; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
+        a:hover, button:hover { background: #555; }
+        .container { max-width: 800px; margin: 40px auto; }
+        .stats { margin-bottom: 20px; padding: 10px; background: #222; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="stats">
+        <p>Raha: {{ session.get('raha', 0) }} | Kierros: {{ session.get('kierros', 0) }} | Tavoite: {{ session.get('tavoite', 0) }}/1000</p>
+        <p>Perkit: {{ session.get('perklist', []) }}</p>
+    </div>
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
