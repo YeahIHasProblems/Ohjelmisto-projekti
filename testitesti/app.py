@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, session, request
-from pelinlogiikka import hae_satunnainen_lentokentta, kauppa_roll, laskuri, pullcard, deckreset, maakoodi
+from pelinlogiikka import hae_satunnainen_lentokentta, kauppa_roll, laskuri, pullcard, deckreset, maakoodi, cardvalue
 
 app = Flask(__name__)
 app.secret_key = "taavoiollamikavaa"
@@ -18,6 +18,8 @@ def reset_game():
     session["blackjackplayer"] = 0
     session["blackjackdealer"] = 0
     session["lippu"] = ""
+    session["playercard"] = ""
+    session["dealercard"] = ""
 
 def init_game():
     session.setdefault("kierros", 0)
@@ -32,6 +34,8 @@ def init_game():
     session.setdefault("blackjackplayer", 0)
     session.setdefault("blackjackdealer", 0)
     session.setdefault("lippu","")
+    session.setdefault("playercard","")
+    session.setdefault("dealercard","")
 
 @app.route("/")
 def index():
@@ -132,9 +136,13 @@ def blackjack():
     if request.method == "POST":
         action = request.form.get("action")
         if action == "hit" and session["blackjackplayer"] < 22:
-            session["blackjackplayer"] += pullcard()
+            card = pullcard()
+            session["playercard"] = f"https://deckofcardsapi.com/static/img/{card}.png"
+            session["blackjackplayer"] += cardvalue(card)
             if session["blackjackdealer"] <= 16:
-                session["blackjackdealer"] += pullcard()
+                dealercard = pullcard()
+                session["blackjackdealer"] += cardvalue(dealercard)
+                session["dealercard"] = f"https://deckofcardsapi.com/static/img/{dealercard}.png"
             if session["blackjackdealer"] > 21 and session["blackjackplayer"] < 21:
                 session["raha"] += 100
                 blackjackreset()
