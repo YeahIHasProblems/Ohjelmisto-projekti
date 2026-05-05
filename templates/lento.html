@@ -7,22 +7,18 @@
 <body>
 
 <h1>Lento</h1>
-
-<div class="container">
-    <div class="stats">
-        <p>Raha: {{ session.get('raha', 0) }} | Kierros: {{ session.get('kierros', 0) }} | Tavoite: {{ session.get('tavoite', 0) }}/1000</p>
-        <p>Perkit: {{ session.get('perklist', []) }}</p>
-    </div>
-    
+<!-- Jos lento EI ole käynnissä -->
 {% if not session.get("double_active") %}
     <form method="post">
         <button type="submit" name="action" value="start">Lennä uuteen paikkaan</button>
     </form>
 {% endif %}
 
+<!-- Jos lento on käynnissä -->
 {% if session.get("double_active") %}
     <p><strong>Uusi kohde:</strong> {{ session["lokaatio"] }}</p>
     <p><strong>Palkka:</strong> {{ session["palkka"] }}</p>
+    <img src="{{ session['lippu'] }}">
 
     {% if session.get("double_message") %}
         <p>{{ session["double_message"] }}</p>
@@ -34,8 +30,10 @@
     </form>
 
 {% else %}
+    <!-- Tuplaus päättynyt -->
     <p>Tuplaus päättyi.</p>
 
+    <!-- Palaa valikkoon -->
     <a href="{{ url_for('index') }}">
         <button>Palaa valikkoon</button>
     </a>
