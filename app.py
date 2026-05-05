@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, session, request
-from pelinlogiikka import hae_satunnainen_lentokentta, kauppa_roll, laskuri
+from pelinlogiikka import hae_satunnainen_lentokentta, kauppa_roll, laskuri, common, rare, epic, supergamble
 
 app = Flask(__name__)
 app.secret_key = "taavoiollamikavaa"
@@ -88,27 +88,34 @@ def kauppa_sivu():
     if session["kauppasecurity"] == 0:
         session["kauppalist"] = [kauppa_roll() for _ in range(3)]
         session["kauppasecurity"] = 1
-    return render_template("kauppa.html")
+    return render_template(
+        "kauppa.html",
+        common=common,
+        rare=rare,
+        epic=epic,
+        supergamble=supergamble
+    )
 
 @app.route("/osta_perk", methods=["POST"])
 def osta_perk():
     init_game()
     index = int(request.form.get("index"))
-    hinta = 1000
-
+    perk_nimi = session["kauppalist"][index]
+    if perk_nimi in common:
+        hinta = 300
+    elif perk_nimi in rare:
+        hinta = 800
+    elif perk_nimi in epic:
+        hinta = 1500
+    else:
+        hinta = 3000
     if session["raha"] >= hinta:
-        try:
-            perk_nimi = session["kauppalist"][index]
-            session["perklist"].append(perk_nimi)
-            session["raha"] -= hinta
-        except IndexError:
-            pass
-    return redirect(url_for("perkit"))
+        session["perklist"].append(perk_nimi)
+        session["raha"] -= hinta
+        
+    return redirect(url_for("kauppa_sivu"))
 
-@app.route("/perkit")
-def perkit():
-    init_game()
-    return render_template("perkit.html")
+
 
 @app.route("/voitto")
 def voitto():
