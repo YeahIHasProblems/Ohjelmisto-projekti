@@ -14,8 +14,19 @@ yhteys = mysql.connector.connect(
 
 
 
-def tallenna_peli():
-    sql = "UPDATE game SET money = %s, tavoite = %s, location = (SELECT ident FROM airport WHERE name = %s LIMIT 1) WHERE screen_name = %s"
+def tallenna_peli(nimi, raha, tavoite, lokaatio_nimi):
+    sql = """UPDATE game SET money = %s, tavoite = %s, location = (SELECT ident FROM airport WHERE name = %s LIMIT 1) WHERE screen_name = %s"""
     kursori = yhteys.cursor()
-    kursori.execute(sql, (raha, tavoite, lokaatio, nimi))
-    print(f"Peli tallennettu!")
+    kursori.execute(sql, (raha, tavoite, lokaatio_nimi, nimi))
+
+
+def tallenna():
+    if "pelaaja" in session:
+        tallenna_peli(
+            session["pelaaja"],
+            session["raha"],
+            session["tavoite"],
+            session["lokaatio"]
+        )
+        return jsonify({"success": True, "message": "Peli tallennettu tietokantaan!"})
+    return jsonify({"success": False, "message": "Ei kirjautunutta käyttäjää."})
