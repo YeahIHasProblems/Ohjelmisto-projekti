@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, session, request
-from pelinlogiikka import hae_satunnainen_lentokentta, kauppa_roll, laskuri, pullcard, deckreset
+from pelinlogiikka import hae_satunnainen_lentokentta, kauppa_roll, laskuri, pullcard, deckreset, maakoodi
 
 app = Flask(__name__)
 app.secret_key = "taavoiollamikavaa"
@@ -15,7 +15,9 @@ def reset_game():
     session["double_active"] = False
     session["double_message"] = ""
     session["lokaatio"] = ""
-
+    session["blackjackplayer"] = 0
+    session["blackjackdealer"] = 0
+    session["lippu"] = ""
 
 def init_game():
     session.setdefault("kierros", 0)
@@ -29,6 +31,7 @@ def init_game():
     session.setdefault("lokaatio", "")
     session.setdefault("blackjackplayer", 0)
     session.setdefault("blackjackdealer", 0)
+    session.setdefault("lippu","")
 
 @app.route("/")
 def index():
@@ -50,6 +53,7 @@ def lento():
             session["kierros"] += 1
             session["kauppalist"] = []
             session["kauppasecurity"] = 0
+            session["lippu"] = lippugenerator()
             return redirect(url_for("lento"))
 
         if action == "double":
@@ -120,26 +124,25 @@ def voitto():
 
     return render_template("voitto.html", kierrokset=kierrokset)
 
+
+
+deck = []
 @app.route("/blackjack", methods = ["GET", "POST"])
 def blackjack():
-    if request.method == "post":
+    if request.method == "POST":
         action = request.form.get("action")
         if action == "hit" and session["blackjackplayer"] < 22:
             session["blackjackplayer"] += pullcard()
             if session["blackjackdealer"] <= 16:
                 session["blackjackdealer"] += pullcard()
-
             if session["blackjackdealer"] > 21 and session["blackjackplayer"] < 21:
                 session["raha"] += 100
                 blackjackreset()
-                return
             if session["blackjackdealer"] < 21 and session["blackjackplayer"] > 21:
                 session["raha"] -= 100
                 blackjackreset()
-                return
             if session["blackjackdealer"] > 21 and session["blackjackplayer"] > 21:
                 blackjackreset()
-                return
 
         if action == "stay":
             if session["blackjackdealer"] > session["blackjackplayer"]:
@@ -153,9 +156,17 @@ def blackjack():
     return render_template("blackjack.html")
 
 def blackjackreset():
-    deckreset()
+    deck.append(deckreset)
     session["blackjackdealer"] = 0
     session["blackjackplayer"] = 0
+
+#lippujuttuja
+def lippugenerator():
+    koodi = maakoodi(session["lokaatio"])
+    lippu = f"https://flagsapi.com/{koodi}/flat/64.png"
+    return lippu
+
+
 
 
 if __name__ == "__main__":

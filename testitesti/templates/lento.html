@@ -7,7 +7,6 @@
 <body>
 
 <h1>Lento</h1>
-
 <!-- Jos lento EI ole käynnissä -->
 {% if not session.get("double_active") %}
     <form method="post">
@@ -19,6 +18,7 @@
 {% if session.get("double_active") %}
     <p><strong>Uusi kohde:</strong> {{ session["lokaatio"] }}</p>
     <p><strong>Palkka:</strong> {{ session["palkka"] }}</p>
+    <img src="{{ session['lippu'] }}">
 
     {% if session.get("double_message") %}
         <p>{{ session["double_message"] }}</p>

@@ -93,8 +93,19 @@ def pullcard():
     country = re.findall("\\w", card)[0]
     value = re.findall("\\d+", card)[0]
     deck.remove(deck[draw])
-    return value
+    return int(value)
 
 def deckreset():
-    deck == deckreset
-    return
+    deck.clear()
+    deck.append(deckreset)
+    return deck
+
+def maakoodi(nimi):
+    sql = f"SELECT iso_country FROM airport WHERE name='{nimi}'"
+    kursori = yhteys.cursor()
+    kursori.execute(sql)
+    tulos = kursori.fetchall()
+    if kursori.rowcount >0 :
+        for rivi in tulos:
+            pass
+    return rivi[0]
