@@ -1,6 +1,5 @@
 import mysql.connector
 import random
-
 #muuttujia
 lokaatio = ""
 kierros = 0
@@ -53,7 +52,7 @@ def lokaatio_update(lokaatio):
 
 nimi = "Vesa"
 def pelaajan_lokaatio(pelaaja):
-    sql = f"SELECT name FROM airport, game where airport.ident = game.location and screen_name = '{pelaaja}'"
+    sql = f"SELECT name FROM airport, game where airport.ident = game.location and screen_name = '{pelaaja}';"
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchall()
@@ -112,7 +111,6 @@ def valikko():
 
 while True:
     valinta = valikko()
-
     if valinta == "1":
         lokaatio = hae_satunnainen_lentokentta()
         lokaatio_update(lokaatio)
@@ -134,19 +132,25 @@ while True:
         raha += palkka
         print("Nykyinen rahatilanne: "+ str(raha))
         pelaajan_lokaatio(nimi)
-        tavoite += laskuri(perklist)
-        print(tavoite)
+        if len(perklist) > 0:
+            tavoite += laskuri(perklist)
+        if tavoite >= 1000:
+            print("Voitit pelin")
+            print("Sinulla kesti " + str(kierros) + " kierrosta!")
+            break
 
 
 
 
 
     elif valinta == "2" and kauppasecurity == 0:
+        kauppalist.clear()
         while kaupparoll < 3:
             kauppalist.append(kauppa())
             print(kauppalist[-1])
             kaupparoll += 1
-        kauppasecurity += 1
+        kaupparoll = 0
+        kauppasecurity = 1
     elif valinta == "3":
         perkvalinta = int(input("Minkä vaihtoehdon haluaisit ostaa"))
         if raha >= 1000:

@@ -20,10 +20,7 @@
         bottom: 20px;
         position: fixed;
     }
-    .righttext {
-        text-align: left;
-        position: absolute;
-        top: 0;
+    .text {
         right: 30px;
         font-size: 40px;
 
@@ -33,9 +30,29 @@
 <button onclick="kauppa()" class ="button" type="button">Kauppa</button>
 <button onclick="lento()" class ="button bottom" type="button">Lennä</button>
 <button class ="button right bottom" type="button">Lopeta peli</button>
-<p class="righttext">Score: <br>Raha: <br>Kierrokset: <br></p>
+<p class ="text" id="score"></p>
+<p class ="text" id="raha"></p>
+<p class ="text" id="kierrokset"></p>
 </body>
 <script>
+    window.onload = function () {
+        score();
+        raha();
+        kierrokset();
+    }
+    function score(){
+        let score = 10
+        document.getElementById('score').innerHTML = `Score: ${score}`;
+    }
+    function raha() {
+        let raha = 1000
+        document.getElementById('raha').innerHTML = `Raha: ${raha}`;
+    }
+    function kierrokset() {
+        let kierrokset = 2
+        document.getElementById('kierrokset').innerHTML = `Kierrokset: ${kierrokset}`;
+    }
+
     function kauppa() {
         window.location.href = "page2.html"
     }

@@ -30,13 +30,40 @@
     }
 </style>
 <body>
-<p>Lentokenttä <br>Valtio</p>
-<p>Score: <br>Kierros:</p>
+<p id="lokaatio"></p>
+<p id="score"></p>
+<p id="raha"></p>
+<p id="kierrokset"></p>
 <p class="righttext">Saadut rahat: </p>
 <button class ="button buttonright" type="button">Tuplaa</button>
 <button onclick="jatka()" class ="button bottom" type="button">Jatka</button>
 </body>
 <script>
+    window.onload = function () {
+        score();
+        raha();
+        kierrokset();
+        lokaatioupdate();
+    }
+    function score(){
+        let score = 10
+        document.getElementById('score').innerHTML = `Score: ${score}`;
+    }
+    function raha() {
+        let raha = 1000
+        document.getElementById('raha').innerHTML = `Raha: ${raha}`;
+    }
+    function kierrokset() {
+        let kierrokset = 2
+        document.getElementById('kierrokset').innerHTML = `Kierrokset: ${kierrokset}`;
+    }
+
+
+    function lokaatioupdate() {
+        let lokaatio = "Helsinkivantaa";
+        let maa = "Suomi";
+        document.getElementById('lokaatio').innerHMTL = `Lentokenttä: ${lokaatio}, Valtio: ${maa}`;
+    }
   function jatka() {
     window.location.href="userinterface.html"
   }
