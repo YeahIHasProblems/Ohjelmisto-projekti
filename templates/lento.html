@@ -137,7 +137,7 @@
         }
 
         .map-card {
-            width: 1950px;
+            width: 2280px;
             height: 1040px;
             position: absolute;
             top: 50%;
@@ -150,6 +150,20 @@
 
 
         }
+
+        .tuplaus-paattyi {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            background-color: hotpink;
+            color: white;
+            padding: 40px 90px;
+            border-radius: 20px;
+            font-size: 60px;
+        }
+
     </style>
 </head>
 
@@ -194,6 +208,7 @@
     {% endif %}
 
 </div>
+    {% if session.get("lokaatio") and session["lokaatio"].get("longitude_deg") %}
     <div class="map-card">
 
             <iframe
@@ -201,17 +216,14 @@
                 height="100%"
                 frameborder="0"
                 scrolling="no"
-                src="https://www.openstreetmap.org/export/embed.html?bbox={{ session['lokaatio']['longitude_deg'] - 1 }},{{ session['lokaatio']['latitude_deg'] - 1 }},{{ session['lokaatio']['longitude_deg'] + 1 }},{{ session['lokaatio']['latitude_deg'] + 1 }}&layer=mapnik&marker={{ session['lokaatio']['latitude_deg'] }},{{ session['lokaatio']['longitude_deg'] }}">
+                src="https://www.openstreetmap.org/export/embed.html?bbox={{ session['lokaatio']['longitude_deg'] - 8 }},{{ session['lokaatio']['latitude_deg'] - 8 }},{{ session['lokaatio']['longitude_deg'] + 8 }},{{ session['lokaatio']['latitude_deg'] + 8 }}&layer=mapnik&marker={{ session['lokaatio']['latitude_deg'] }},{{ session['lokaatio']['longitude_deg'] }}">
             </iframe>
-        {% if not session.get("double_active") %}
-        <form method="post" class="new-flight-form">
-        <button type="submit" name="action" value="start" class="new-flight-button">
-            LENNÄ UUTEEN PAIKKAAN
-        </button>
-</form>
-{% endif %}
+            {% if not session.get("double_active") %}
+                <p class="tuplaus-paattyi">TUPLAUS PÄÄTTYI</p>
+            {% endif %}
 
     </div>
+    {% endif %}
 
     <div class="card destination-card">
         {% if session.get("double_active") %}
@@ -241,7 +253,12 @@
                 </button>
             </form>
         {% else %}
-            <p>Tuplaus päättyi.</p>
+            <form method="post">
+                <button type="submit" name="action" value="start">
+                    LENNÄ UUTEEN PAIKKAAN
+                </button>
+            </form>
+
         {% endif %}
     </div>
 
