@@ -92,7 +92,7 @@ def laskuri(perklist):
     score, mult, xmult = 0, 0, 1
     kursori = yhteys.cursor()
     for perk in perklist:
-        sql = "SELECT score_bonus, mult_bonus, xmult_bonus FROM perks WHERE name = %s"
+        sql = "SELECT score, mult, xmult FROM perks WHERE name = %s"
         kursori.execute(sql, (perk,))
         tulos = kursori.fetchone()
         if tulos:

@@ -14,7 +14,6 @@ app.secret_key = "taavoiollamikavaa"
 # --- ALUSTUKSET ---
 
 def init_game():
-    """Alustaa istunnon muuttujat, jos niitä ei ole jo asetettu (esim. kirjautumisen yhteydessä)."""
     defaults = {
         "kierros": 0,
         "tavoite": 0,
