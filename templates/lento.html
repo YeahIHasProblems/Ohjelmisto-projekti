@@ -3,6 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Lento</title>
+
+    <style>
+
+        .box {
+
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            width: fit-content;
+            background-color: #42e2ff;
+        }
+
+        #weather {
+            border-collapse: collapse;
+
+        }
+
+        #weather td {
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        #weather-icon {
+            width: 64px;
+            height: 64px;
+        }
+
+    </style>
+
 </head>
 <body>
 
@@ -28,7 +58,7 @@
         <button type="submit" name="action" value="stop_double">Lopeta tuplaus</button>
     </form>
 
-    <section class="box">
+    <section class="box" style="">
         <header>
             <p><strong>Sää kohteessa:</strong> {{ session["lokaatio"]["name"] }}</p>
         </header>
