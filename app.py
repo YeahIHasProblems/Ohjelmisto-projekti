@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, url_for, session, request
-import random
 from pelinlogiikka import hae_satunnainen_lentokentta, kauppa_roll, laskuri, common, rare, epic, supergamble, pullcard, \
     deckreset, maakoodi
 
