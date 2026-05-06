@@ -5,86 +5,270 @@
     <title>Lento</title>
 
     <style>
-
-        .box {
-
-            border: 2px solid #333;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            width: fit-content;
-            background-color: #42e2ff;
+        body {
+            margin: 0;
+            font-family: Impact, sans-serif;
+            background-color: darkslategray;
         }
 
-        #weather {
-            border-collapse: collapse;
+        .page {
+            min-height: 90vh;
+            padding: 60px;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            position: relative;
 
         }
 
-        #weather td {
-            padding: 10px 20px;
+        .card {
+            background-color: lightyellow;
+            color: white;
+            border: 2px solid lawngreen;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+
+
+        button {
+            all: unset;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            font-size: 60px;
+        }
+        .location-card {
+            width: 320px;
+            height: 520px;
+            background-color: lightseagreen;
+            padding: 30px;
+            box-sizing: border-box;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .location-name {
+            font-size: 40px;
+            text-align: center;
+        }
+        .flag-image {
+            width: 150px;
+            border-radius: 10px;
+        }
+
+        .weather-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .weather-row{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 26px;
+        }
+        .destination-card {
+            justify-self: end;
+            width: 360px;
+            height: 360px;
+            background-color: darkslateblue;
+        }
+
+        .back-card {
+            grid-column: 1;
+            grid-row: 2;
+            align-self: end;
+            width: 430px;
+            height: 210px;
+            background-color: lightsalmon;
+
+        }
+
+        .double-card {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: end;
+            align-self: end;
+            width: 430px;
+            height: 210px;
+            background-color: #FFD900;
+        }
+
+        img {
+            max-width: 220px;
+            margin-top: 10px;
         }
 
         #weather-icon {
-            width: 64px;
-            height: 64px;
+            width: 50px;
+            height: 50px;
         }
 
-    </style>
+        .info p {
+            margin: 18px 0;
+        }
 
+        .weather {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: white;
+        }
+
+        .back-button {
+            margin: 0;
+            font-size: 60px;
+        }
+
+        .map-card {
+            width: 1950px;
+            height: 1040px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            border-radius: 20px;
+            z-index: 1;
+            opacity: 0.95;
+
+
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>Lento</h1>
+<div class="page">
 
-{% if not session.get("double_active") %}
-    <form method="post">
-        <button type="submit" name="action" value="start">Lennä uuteen paikkaan</button>
-    </form>
-{% endif %}
+    <div class="card location-card">
 
-{% if session.get("double_active") %}
-    <p><strong>Uusi kohde:</strong> {{ session["lokaatio"]["name"] }}</p>
-    <p><strong>Palkka:</strong> {{ session["palkka"] }}</p>
-    <img src="{{ session['lippu'] }}">
+        {% if session.get("lokaatio") %}
 
-    {% if session.get("double_message") %}
-        <p>{{ session["double_message"] }}</p>
+            <div class="location-name">
+                {{ session["lokaatio"]["name"] }}
+            </div>
+
+            <img class="flag-image" src="{{ session['lippu'] }}" alt="Lippu">
+
+             <div class="weather-box">
+
+                 <div class="weather-row">
+                    <span>SÄÄ:</span>
+                    <span id="temperature">Loading...</span>
+                </div>
+
+            <div class="weather-row">
+                <span id="airport-conditions">Loading...</span>
+
+                <img id="weather-icon" src="" alt="Sää">
+            </div>
+
+            <div class="weather-row">
+                <span>TUULI:</span>
+                <span id="airport-wind">Loading...</span>
+            </div>
+
+
+
+    </div>
+
+
+
     {% endif %}
 
-    <form method="post">
-        <button type="submit" name="action" value="double">Tuplaa</button>
-        <button type="submit" name="action" value="stop_double">Lopeta tuplaus</button>
-    </form>
+</div>
+    <div class="map-card">
 
-    <section class="box" style="">
-        <header>
-            <p><strong>Sää kohteessa:</strong> {{ session["lokaatio"]["name"] }}</p>
-        </header>
+            <iframe
+                width="100%"
+                height="100%"
+                frameborder="0"
+                scrolling="no"
+                src="https://www.openstreetmap.org/export/embed.html?bbox={{ session['lokaatio']['longitude_deg'] - 1 }},{{ session['lokaatio']['latitude_deg'] - 1 }},{{ session['lokaatio']['longitude_deg'] + 1 }},{{ session['lokaatio']['latitude_deg'] + 1 }}&layer=mapnik&marker={{ session['lokaatio']['latitude_deg'] }},{{ session['lokaatio']['longitude_deg'] }}">
+            </iframe>
+        {% if not session.get("double_active") %}
+        <form method="post" class="new-flight-form">
+        <button type="submit" name="action" value="start" class="new-flight-button">
+            LENNÄ UUTEEN PAIKKAAN
+        </button>
+</form>
+{% endif %}
 
-        <table id="weather">
-            <tr>
-                <td>Temperature</td>
-                <td>
-                    <img id="weather-icon" src="" alt="Current weather">
-                </td>
-                <td>Wind</td>
-            </tr>
-            <tr>
-                <td id="temperature">Loading...</td>
-                <td id="airport-conditions">Loading...</td>
-                <td id="airport-wind">Loading...</td>
-            </tr>
-        </table>
-    </section>
+    </div>
 
-   <script>
+    <div class="card destination-card">
+        {% if session.get("double_active") %}
+            <div>
+                <p>SCORE RAHA TMS COMING SOON:</p>
+                <p>{{ session["lokaatio"]["name"] }}</p>
+                <p>Palkka: {{ session["palkka"] }}</p>
+
+                {% if session.get("double_message") %}
+                    <p>{{ session["double_message"] }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card back-card">
+        <a href="{{ url_for('index') }}" class="back-link">
+            <p class="back-button">TAKAISIN</p>
+        </a>
+    </div>
+
+    <div class="card double-card">
+        {% if session.get("double_active") %}
+            <form method="post">
+                <button type="submit" name="action" value="double">
+                    TUPLAA
+                </button>
+            </form>
+        {% else %}
+            <p>Tuplaus päättyi.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% if session.get("double_active") %}
+<script>
     const latitude = {{ session["lokaatio"]["latitude_deg"] }};
     const longitude = {{ session["lokaatio"]["longitude_deg"] }};
 
-    async function getCurrentWeather(latitude, longitude) {
+    const weatherCodeMap = {
+        0: ["SELKEÄÄ", "weatherpics/sun.png"],
+        1: ["MELKO SELKEÄÄ", "weatherpics/sun.png"],
+        2: ["PUOLIPILVISTÄ", "weatherpics/cloudy.png"],
+        3: ["PILVISTÄ", "weatherpics/overcast.png"],
+        45: ["SUMUISTA", "weatherpics/fog.png"],
+        48: ["HUURTUNUTTA sumua", "weatherpics/fog.png"],
+        61: ["HEIKKOA SADETTA", "weatherpics/rain.png"],
+        63: ["KOHTALAISTA SADETTA", "weatherpics/rain.png"],
+        65: ["VOIMAKASTA SADETTA", "weatherpics/rain.png"],
+        71: ["KEVYTTÄ LUNTA", "weatherpics/snow.png"],
+        73: ["KOHTALAISTA LUNTA", "weatherpics/snow.png"],
+        75: ["VOIMAKASTA LUNTA", "weatherpics/snow.png"],
+        95: ["UKKOSTA", "weatherpics/thunderstorm.png"]
+    };
 
+    async function getCurrentWeather(latitude, longitude) {
         const url =
             `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m,weather_code`;
 
@@ -92,35 +276,24 @@
         const data = await response.json();
 
         document.getElementById("temperature").textContent =
-            data.current.temperature_2m + "°C";
+            data.current.temperature_2m + " °C";
 
         document.getElementById("airport-wind").textContent =
             data.current.wind_speed_10m + " m/s";
 
-        let weatherText = "Unknown";
-
         const code = data.current.weather_code;
+        const weatherInfo =
+            weatherCodeMap[code] || ["Tuntematon sää", "weatherpics/unknown.png"];
 
-        if (code === 0) weatherText = "Clear";
-        else if (code <= 3) weatherText = "Cloudy";
-        else if (code <= 48) weatherText = "Fog";
-        else if (code <= 67) weatherText = "Rain";
-        else if (code <= 77) weatherText = "Snow";
-        else if (code <= 99) weatherText = "Storm";
-
-        document.getElementById("airport-conditions").textContent = weatherText;
+        document.getElementById("airport-conditions").textContent = weatherInfo[0];
+        document.getElementById("weather-icon").src = "{{ url_for('static', filename='') }}" + weatherInfo[1];
     }
 
     getCurrentWeather(latitude, longitude);
+
 </script>
-
-{% else %}
-    <p>Tuplaus päättyi.</p>
-
-    <a href="{{ url_for('index') }}">
-        <button>Palaa valikkoon</button>
-    </a>
 {% endif %}
 
 </body>
 </html>
+
