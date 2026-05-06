@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lento</title>
+</head>
+<body>
+
+<h1>Lento</h1>
+
+<!-- Jos lento EI ole käynnissä -->
+{% if not session.get("double_active") %}
+    <form method="post">
+        <button type="submit" name="action" value="start">Lennä uuteen paikkaan</button>
+    </form>
+{% endif %}
+
+<!-- Jos lento on käynnissä -->
+{% if session.get("double_active") %}
+    <p><strong>Uusi kohde:</strong> {{ session["lokaatio"] }}</p>
+    <p><strong>Palkka:</strong> {{ session["palkka"] }}</p>
+
+    {% if session.get("double_message") %}
+        <p>{{ session["double_message"] }}</p>
+    {% endif %}
+
+    <form method="post">
+        <button type="submit" name="action" value="double">Tuplaa</button>
+        <button type="submit" name="action" value="stop_double">Lopeta tuplaus</button>
+    </form>
+
+{% else %}
+    <!-- Tuplaus päättynyt -->
+    <p>Tuplaus päättyi.</p>
+
+    <!-- Palaa valikkoon -->
+    <a href="{{ url_for('index') }}">
+        <button>Palaa valikkoon</button>
+    </a>
+
+{% endif %}
+
+</body>
+</html>
