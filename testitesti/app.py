@@ -153,6 +153,13 @@ def blackjack():
                 blackjackreset()
 
         if action == "stay":
+            while True:
+                if session["blackjackdealer"] < session["blackjackplayer"] or session["blackjackdealer"] < 16:
+                    dealercard = pullcard()
+                    session["blackjackdealer"] += cardvalue(dealercard)
+                    session["dealercard"] = f"https://deckofcardsapi.com/static/img/{dealercard}.png"
+                else:
+                    break
             if session["blackjackdealer"] > session["blackjackplayer"]:
                 session["raha"] -= 100
                 blackjackreset()

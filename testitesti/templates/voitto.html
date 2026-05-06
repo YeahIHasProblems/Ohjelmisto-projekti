@@ -1,18 +1,48 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
+    <style>
+        .text1 {
+            border-radius: 10px;
+            font-size: 28px;
+            padding: 32px 32px;
+            background-color: black;
+            border-style: inset;
+            border-color: gold;
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            color: white;
+            top: 100px;
+        }
+        body {
+            background-image: url("/static/winner.png");
+            background-size:cover;
+        }
+        .button3 {
+            border-radius: 10px;
+            font-size: 28px;
+            padding: 32px 32px;
+            background-color: black;
+            border-style: inset;
+            border-color: gold;
+            display: inline;
+            position: fixed;
+            bottom: 20px;
+            left: 75px;
+            color: white;
+        }
+    </style>
     <meta charset="UTF-8">
     <title>Voitto!</title>
 </head>
 <body>
 
-<h1>Voitit pelin!</h1>
 
-<p>Sinulla kesti {{ kierrokset }} kierrosta saavuttaa 1000 pistettä.</p>
 
-<a href="{{ url_for('index') }}">
-    <button>Aloita uusi peli</button>
-</a>
+<p class="text1">Voitit pelin!!! <br>Sinulla kesti {{ kierrokset }} kierrosta saavuttaa 1000 pistettä.</p>
+
+<a class="button:hover, button3" href="{{ url_for('index') }}">Takaisin valikkoon</a>
 
 </body>
 </html>

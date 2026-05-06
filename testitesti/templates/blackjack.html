@@ -34,6 +34,19 @@
             left: 75px;
             color: white;
         }
+        .text3 {
+            border-radius: 10px;
+            font-size: 40px;
+            padding: 32px 32px;
+            background-color: dimgray;
+            border-style: inset;
+            border-color: gold;
+            display: inline;
+            position: fixed;
+            top: 20px;
+            right: 75px;
+            color: white;
+        }
         .button3 {
             border-radius: 10px;
             font-size: 24px;
@@ -80,18 +93,10 @@
             margin: auto;
             width: 10%;
         }
-        .sivu {
-            height: 300px;
-            width: 100%;
-            background-color: #13be77;
-            position: absolute;
-            left: 0px;
-
-        }
     </style>
 </head>
 <body>
-    <p>Raha: {{ session.get('raha', 0) }}</p>
+    <p class="text3">Raha: {{ session.get('raha', 0) }}</p>
     <p class="text1">Pelaaja: {{ session.get('blackjackplayer', 0) }}</p>
     <p class="text2">Talo: {{ session.get('blackjackdealer', 0) }}</p>
     <form method="post">
@@ -100,7 +105,7 @@
         <button class="button:hover, button2" type="submit" name="action" value="stay">Stay</button>
             </div>
     </form>
-    <button class="button:hover, button3"href="{{ url_for('index') }}">Takaisin</button>
+    <a class="button:hover, button3" href="{{ url_for('index') }}">Takaisin valikkoon</a>
     <img  src="{{ session['dealercard'] }}">
     <img  src="{{ session['playercard'] }}">
 <script></script>
