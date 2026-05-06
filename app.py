@@ -133,25 +133,42 @@ def lento():
     if request.method == "POST":
         action = request.form.get("action")
         if action == "start":
+            if not session.get("double_active", False):
+                value = laskuri(session["perklist"])
+                if not isinstance(value, int):
+                    value = 0
+                session["tavoite"] += value
+                session["raha"] += session["palkka"]
+                session["palkka"] = 0
+
             session["lokaatio"] = hae_satunnainen_lentokentta()
             session["palkka"] = random.randint(5, 2000)
             session["double_active"] = True
             session["kierros"] += 1
             session["kauppasecurity"] = 0
-            koodi = maakoodi(session["lokaatio"])
+            koodi = session["lokaatio"]["iso_country"]
             session["lippu"] = f"https://flagsapi.com/{koodi}/flat/64.png"
 
         elif action == "double":
             if random.randint(1, 2) == 1:
                 session["palkka"] *= 2
             else:
-                session["palkka"] = 0
                 session["double_active"] = False
+                value = laskuri(session["perklist"])
+                if not isinstance(value, int):
+                    value = 0
+                session["tavoite"] += value
+                session["raha"] += session["palkka"]
+                session["palkka"] = 0
 
         elif action == "stop_double":
+            value = laskuri(session["perklist"])
+            if not isinstance(value, int):
+                value = 0
+            session["tavoite"] += value
             session["raha"] += session["palkka"]
-            session["tavoite"] += laskuri(session["perklist"])
-            if session["tavoite"] >= 1000: return redirect(url_for("voitto"))
+            if session["tavoite"] >= 1000:
+                return redirect(url_for("voitto"))
             session["double_active"] = False
             session["palkka"] = 0
 
@@ -180,41 +197,44 @@ def osta_perk():
     return redirect(url_for("kauppa_sivu"))
 
 
-@app.route("/blackjack", methods=["GET", "POST"])
+deck = []
+@app.route("/blackjack", methods = ["GET", "POST"])
 def blackjack():
-    if "pelaaja" not in session: return redirect(url_for("login_sivu"))
-    init_game()
-
     if request.method == "POST":
         action = request.form.get("action")
         if action == "hit" and session["blackjackplayer"] < 22:
-            p_card = pullcard()
-            session["playercard"] = f"https://deckofcardsapi.com/static/img/{p_card}.png"
-            session["blackjackplayer"] += cardvalue(p_card)
-
+            card = pullcard()
+            session["playercard"] = f"https://deckofcardsapi.com/static/img/{card}.png"
+            session["blackjackplayer"] += cardvalue(card)
             if session["blackjackdealer"] <= 16:
-                d_card = pullcard()
-                session["blackjackdealer"] += cardvalue(d_card)
-                session["dealercard"] = f"https://deckofcardsapi.com/static/img/{d_card}.png"
-
-
-            if session["blackjackplayer"] > 21 or session["blackjackdealer"] > 21:
-                if session["blackjackplayer"] <= 21:
-                    session["raha"] += 100
-                else:
-                    session["raha"] -= 100
+                dealercard = pullcard()
+                session["blackjackdealer"] += cardvalue(dealercard)
+                session["dealercard"] = f"https://deckofcardsapi.com/static/img/{dealercard}.png"
+            if session["blackjackdealer"] > 21 and session["blackjackplayer"] < 21:
+                session["raha"] += 100
+                blackjackreset()
+            elif session["blackjackdealer"] < 21 and session["blackjackplayer"] > 21:
+                session["raha"] -= 100
+                blackjackreset()
+            elif session["blackjackdealer"] > 21 and session["blackjackplayer"] > 21:
                 blackjackreset()
 
-        elif action == "stay":
+        if action == "stay":
+            if session["blackjackdealer"] > 16:
+                dealercard = pullcard()
+                session["blackjackdealer"] += cardvalue(dealercard)
 
-            if session["blackjackplayer"] > session["blackjackdealer"]:
+            elif session ["blackjackdealer"] > 21 or session["blackjackplayer"] > session["blackjackdealer"]:
                 session["raha"] += 100
-            else:
+            elif session["blackjackplayer"] < session["blackjackdealer"]:
                 session["raha"] -= 100
             blackjackreset()
-
     return render_template("blackjack.html")
 
+def blackjackreset():
+    deck.append(deckreset)
+    session["blackjackdealer"] = 0
+    session["blackjackplayer"] = 0
 
 @app.route("/perkit")
 def perkit():
@@ -235,6 +255,17 @@ def voitto():
     reset_game()
 
     return render_template("voitto.html", kierrokset=kierrokset)
+
+def lippugenerator():
+    lokaatio = session["lokaatio"]
+
+    if isinstance(lokaatio, dict):
+        koodi = maakoodi(lokaatio["name"])
+    else:
+        koodi = maakoodi(lokaatio)
+
+    lippu = f"https://flagsapi.com/{koodi}/flat/64.png"
+    return lippu
 
 if __name__ == "__main__":
     app.run(debug=True)

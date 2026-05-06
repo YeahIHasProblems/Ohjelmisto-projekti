@@ -3,18 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body {
+            background-image: url("/static/balatro.jpg");
+
+        }
+        .text1 {
+            border-radius: 10px;
+            font-size: 24px;
+            padding: 32px 32px;
+            background-color: dimgray;
+            border-style: inset;
+            border-color: gold;
+            display: inline;
+            position: fixed;
+            bottom: 250px;
+            left: 75px;
+            color: white;
+        }
+        .text2 {
+            border-radius: 10px;
+            font-size: 24px;
+            padding: 32px 32px;
+            background-color: dimgray;
+            border-style: inset;
+            border-color: gold;
+            display: inline;
+            position: fixed;
+            top: 20px;
+            left: 75px;
+            color: white;
+        }
+        .text3 {
+            border-radius: 10px;
+            font-size: 40px;
+            padding: 32px 32px;
+            background-color: dimgray;
+            border-style: inset;
+            border-color: gold;
+            display: inline;
+            position: fixed;
+            top: 20px;
+            right: 75px;
+            color: white;
+        }
+        .button3 {
+            border-radius: 10px;
+            font-size: 24px;
+            padding: 32px 32px;
+            background-color: dimgray;
+            border-style: inset;
+            border-color: gold;
+            display: inline-block;
+            position: fixed;
+            bottom: 20px;
+            left: 75px;
+            color: white;
+            text-decoration: none;
+        }
+
+        button {
+            border-radius: 10px;
+            font-size: 24px;
+            padding: 32px 32px;
+        }
+        .button1 {
+            background-color: deepskyblue;
+        }
+        .button2 {
+            background-color: orangered;
+        }
+        button:hover {
+            scale: 1.20;
+        }
+        .dealer {
+            justify-content: center;
+            position: fixed;
+        }
+        .buttoncenter {
+            position: fixed;
+            bottom: 20px;
+            justify-content: center;
+            gap: 20px;
+            display: flex;
+            left: 0;
+            width: 100%;
+        }
+        img {
+            display: block;
+            margin: auto;
+            width: 10%;
+        }
+    </style>
 </head>
 <body>
-    <p>Raha: {{ session.get('raha', 0) }}</p>
-    <p>Pelaaja: {{ session.get('blackjackplayer', 0) }}</p>
-    <p>Talo: {{ session.get('blackjackdealer', 0) }}</p>
+    <p class="text3">Raha: {{ session.get('raha', 0) }}</p>
+    <p class="text1">Pelaaja: {{ session.get('blackjackplayer', 0) }}</p>
+    <p class="text2">Talo: {{ session.get('blackjackdealer', 0) }}</p>
     <form method="post">
-        <button type="submit" name="action" value="hit">Hit</button>
-        <button type="submit" name="action" value="stay">Stay</button>
+        <div class="buttoncenter">
+        <button class="button:hover, button1" type="submit" name="action" value="hit">Hit</button>
+        <button class="button:hover, button2" type="submit" name="action" value="stay">Stay</button>
+            </div>
     </form>
-    <a class="button" href="{{ url_for('index') }}">Takaisin valikkoon</a>
-    <img src="{{ session['playercard'] }}">
-    <img style="float:right;"src="{{ session['dealercard'] }}">
+    <a class="button:hover, button3" href="{{ url_for('index') }}">Takaisin valikkoon</a>
+    <img  src="{{ session['dealercard'] }}">
+    <img  src="{{ session['playercard'] }}">
 <script></script>
 </body>
 </html>

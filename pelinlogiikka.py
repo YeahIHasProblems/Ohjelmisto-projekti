@@ -9,7 +9,8 @@ yhteys = mysql.connector.connect(
     database='flight_game',
     user='root',
     password='AdminST',
-    autocommit=True
+    autocommit=True,
+    buffered=True
 )
 
 # --- KONFIGURAATIO ---
@@ -54,11 +55,20 @@ def tallenna_peli(nimi, raha, tavoite, lokaatio_nimi):
 
 
 def hae_satunnainen_lentokentta():
-    sql = "SELECT name FROM airport ORDER BY RAND() LIMIT 1;"
-    kursori = yhteys.cursor()
+    sql = """SELECT airport.name, latitude_deg, longitude_deg, iso_country FROM airport ORDER BY RAND() LIMIT 1;"""
+    kursori = yhteys.cursor(dictionary=True)
     kursori.execute(sql)
     tulos = kursori.fetchone()
-    return tulos[0] if tulos else "Helsinki-Vantaa Airport"
+
+    if tulos:
+        return tulos
+
+    return{
+        "name": "Tuntematon kenttä",
+        "latitude_deg": 60.1699,
+        "longitude_deg": 24.9384,
+        "iso_country": "FI"
+    }
 
 def lokaatio_update(lokaatio_nimi, pelaaja):
     sql = "UPDATE game SET location = (SELECT ident FROM airport WHERE name = %s) WHERE screen_name = %s;"
@@ -72,12 +82,8 @@ def hae_pelaajan_lokaatio(pelaaja):
     tulos = kursori.fetchone()
     return tulos[0] if tulos else None
 
-def maakoodi(lentokentta_nimi):
-    sql = "SELECT iso_country FROM airport WHERE name = %s"
-    kursori = yhteys.cursor()
-    kursori.execute(sql, (lentokentta_nimi,))
-    tulos = kursori.fetchone()
-    return tulos[0] if tulos else "FI"
+def maakoodi(lokaatio):
+    return lokaatio["iso_country"]
 
 # --- KAUPPA JA PERKIT ---
 
@@ -90,8 +96,9 @@ def kauppa_roll():
 
 def laskuri(perklist):
     score, mult, xmult = 0, 0, 1
-    kursori = yhteys.cursor()
+    
     for perk in perklist:
+        kursori = yhteys.cursor()
         sql = "SELECT score, mult, xmult FROM perks WHERE name = %s"
         kursori.execute(sql, (perk,))
         tulos = kursori.fetchone()
