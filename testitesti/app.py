@@ -146,28 +146,22 @@ def blackjack():
             if session["blackjackdealer"] > 21 and session["blackjackplayer"] < 21:
                 session["raha"] += 100
                 blackjackreset()
-            if session["blackjackdealer"] < 21 and session["blackjackplayer"] > 21:
+            elif session["blackjackdealer"] < 21 and session["blackjackplayer"] > 21:
                 session["raha"] -= 100
                 blackjackreset()
-            if session["blackjackdealer"] > 21 and session["blackjackplayer"] > 21:
+            elif session["blackjackdealer"] > 21 and session["blackjackplayer"] > 21:
                 blackjackreset()
 
         if action == "stay":
-            while True:
-                if session["blackjackdealer"] < session["blackjackplayer"] or session["blackjackdealer"] < 16:
-                    dealercard = pullcard()
-                    session["blackjackdealer"] += cardvalue(dealercard)
-                    session["dealercard"] = f"https://deckofcardsapi.com/static/img/{dealercard}.png"
-                else:
-                    break
-            if session["blackjackdealer"] > session["blackjackplayer"]:
-                session["raha"] -= 100
-                blackjackreset()
-            if session["blackjackdealer"] < session["blackjackplayer"]:
+            if session["blackjackdealer"] > 16:
+                dealercard = pullcard()
+                session["blackjackdealer"] += cardvalue(dealercard)
+
+            elif session ["blackjackdealer"] > 21 or session["blackjackplayer"] > session["blackjackdealer"]:
                 session["raha"] += 100
-                blackjackreset()
-            else:
-                blackjackreset()
+            elif session["blackjackplayer"] < session["blackjackdealer"]:
+                session["raha"] -= 100
+            blackjackreset()
     return render_template("blackjack.html")
 
 def blackjackreset():

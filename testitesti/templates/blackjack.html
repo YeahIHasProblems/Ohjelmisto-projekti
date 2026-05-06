@@ -96,6 +96,7 @@
     </style>
 </head>
 <body>
+    <div class="left"></div>
     <p class="text3">Raha: {{ session.get('raha', 0) }}</p>
     <p class="text1">Pelaaja: {{ session.get('blackjackplayer', 0) }}</p>
     <p class="text2">Talo: {{ session.get('blackjackdealer', 0) }}</p>
@@ -105,7 +106,7 @@
         <button class="button:hover, button2" type="submit" name="action" value="stay">Stay</button>
             </div>
     </form>
-    <a class="button:hover, button3" href="{{ url_for('index') }}">Takaisin valikkoon</a>
+        <a class="button:hover, button3" href="{{ url_for('index') }}">Takaisin valikkoon</a>
     <img  src="{{ session['dealercard'] }}">
     <img  src="{{ session['playercard'] }}">
 <script></script>
