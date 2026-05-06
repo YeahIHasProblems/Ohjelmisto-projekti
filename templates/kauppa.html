@@ -28,6 +28,7 @@
             padding: 20px;
             border-right: 4px solid #21342d;
             color: #d8ffe9;
+            background-image: url(/static/puu.png);
         }
 
         .shop-area {
@@ -46,6 +47,7 @@
                 0 6px 0 #2b1a0f,
                 0 0 12px rgba(0, 0, 0, .6);
             overflow: hidden;
+            background-image: url(/static/puu.png);
         }
 
         .cards {
@@ -76,6 +78,7 @@
             padding: 20px;
             border-left: 4px solid #21342d;
             color: #black;
+            background-image: url(/static/puu.png);
         }
 
         .button {
@@ -175,8 +178,8 @@
     <div class="right-panel">
             <h3>Tilastot</h3>
         <div class="stats">
-            <p>🪙Raha: {{ session.get('raha', 0) }} | 🐍Kierros: {{ session.get('kierros', 0) }} | ⛰️Tavoite: {{ session.get('tavoite', 0) }}/1000</p>
-            <p>Perkit: {{ session.get('perklist', []) }}</p>
+            <p>🪙 Raha: {{ session.get('raha', 0) }} | 🐍 Kierros: {{ session.get('kierros', 0) }} | ⛰️ Tavoite: {{ session.get('tavoite', 0) }}/1000</p>
+            <p>🃏 Perkit: {{ session.get('perklist', []) }}</p>
         </div>
     </div>
 
