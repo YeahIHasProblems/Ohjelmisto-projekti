@@ -7,11 +7,14 @@
     <style>
         body {
             background: #211e4f;
-            font-family: 'Trebuchet MS', sans-serif;
-            color: #f0e6ff;
+            font-family: 'Impact', sans-serif;
+            color: #black;
             margin: 0;
             padding: 0;
-            background-image: url(/static/water.jpeg);
+            background-image: url(/static/Morshu_shop.png);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .container {
@@ -21,9 +24,9 @@
 
         .left-panel {
             width: 260px;
-            background: #0d2f25;
+            background: #5b3a23;
             padding: 20px;
-            border-right: 4px solid #1a4d3b;
+            border-right: 4px solid #21342d;
             color: #d8ffe9;
         }
 
@@ -33,11 +36,16 @@
         }
 
         .shop-title {
-            font-size: 32px;
-            color: #b6ffe0;
-            margin-bottom: 20px;
-            text-shadow: 0 0 8px #8affc7;
+            padding: 18px 32px;
+            margin: 20px auto;
             text-align: center;
+            background: linear-gradient(135deg, #5b3a23, #7a4b2a);
+            border: 4px solid #2b1a0f;
+            border-radius: 6px;
+            box-shadow:
+                0 6px 0 #2b1a0f,
+                0 0 12px rgba(0, 0, 0, .6);
+            overflow: hidden;
         }
 
         .cards {
@@ -49,10 +57,10 @@
 
         .card {
             background: #1a0f1f;
-            border: 4px solid #1a4d3b;
+            border: 4px inset #fbff00;
             border-radius: 12px;
             width: 180px;
-            padding: 15px;
+            padding: 15px;  
             box-shadow: 0 0 15px #211e4f;
             text-align: center;
             cursor: pointer;
@@ -64,10 +72,10 @@
 
         .right-panel {
             width: 260px;
-            background: #0d2f25;
+            background: #5b3a23;
             padding: 20px;
-            border-left: 4px solid #1a4d3b;
-            color: #d8ffe9;
+            border-left: 4px solid #21342d;
+            color: #black;
         }
 
         .button {
@@ -77,12 +85,15 @@
             margin-top: 20px;
             text-align: center;
             border-radius: 8px;
-            color: white;
+            color: rgb(7, 7, 7);
             text-decoration: none;
             font-size: 18px;
             box-shadow: 0 0 10px #1a4d3b;
             background-image: url(/static/gold.png);
 
+        }
+        .button:hover {
+            transform: scale(1.05);
         }
 
         .popup-bg {
@@ -99,27 +110,30 @@
 
         .popup {
             background: #1a0f1f;
-            border: 4px solid #1a4d3b;
+            border: 4px solid #3c544c;
             padding: 25px;
             border-radius: 12px;
             width: 300px;
             text-align: center;
-            box-shadow: 0 0 20px #13be77;
+            box-shadow: 0 0 20px #d1f023;
         }
 
         .popup button {
             margin: 10px;
             padding: 10px 20px;
-            background: #13be77;
+            background: #5b3a23;
             border: none;
             border-radius: 8px;
-            color: white;
+            color: black;
             font-size: 16px;
             cursor: pointer;
         }
 
         .popup button:hover {
-            background: #13be77;
+            background: #d1f023;
+        }
+        .price {
+            color:green;
         }
     </style>
 </head>
