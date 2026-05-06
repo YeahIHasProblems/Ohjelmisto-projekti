@@ -90,9 +90,8 @@
         <p>💰 RAHA: {{ session['raha'] }}€</p>
         <p>🎯 SCORE: {{ session['tavoite'] }}</p>
         <p>🔄 KIERROS: {{ session['kierros'] }}</p>
+        <p>🃏 Perkit: {{ session.get('perklist', []) }}</p>
     </div>
-
-    <a href="{{ url_for('perkit') }}" class="btn btn-perkit">Perkit</a>
 
     <a href="{{ url_for('lento') }}" class="btn btn-lento">Lento</a>
 
