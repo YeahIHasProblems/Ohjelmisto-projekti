@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Kauppa</title>
+
+    <style>
+        body {
+            background: #211e4f;
+            font-family: 'Trebuchet MS', sans-serif;
+            color: #f0e6ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-panel {
+            width: 260px;
+            background: #0d2f25;
+            padding: 20px;
+            border-right: 4px solid #1a4d3b;
+            color: #d8ffe9;
+        }
+
+        .shop-area {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .shop-title {
+            font-size: 32px;
+            color: #b6ffe0;
+            margin-bottom: 20px;
+            text-shadow: 0 0 8px #8affc7;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            background: #1a0f1f;
+            border: 4px solid #1a4d3b;
+            border-radius: 12px;
+            width: 180px;
+            padding: 15px;
+            box-shadow: 0 0 15px #211e4f;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .right-panel {
+            width: 260px;
+            background: #0d2f25;
+            padding: 20px;
+            border-left: 4px solid #1a4d3b;
+            color: #d8ffe9;
+        }
+
+        .button {
+            display: block;
+            background: #0fa072;
+            padding: 12px;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            box-shadow: 0 0 10px #1a4d3b;
+        }
+
+        .popup-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background: #1a0f1f;
+            border: 4px solid #1a4d3b;
+            padding: 25px;
+            border-radius: 12px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 0 20px #13be77;
+        }
+
+        .popup button {
+            margin: 10px;
+            padding: 10px 20px;
+            background: #13be77;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background: #13be77;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="left-panel">
+         <a class="button" href="{{ url_for('index') }}">Takaisin valikkoon</a>
+    </div>
+
+    <div class="shop-area">
+        <div class="shop-title">SHOP - Osta uusia perkkejä!</div>
+
+        {% if session.get("kauppalist") %}
+        <div class="cards">
+            {% for item in session["kauppalist"] %}
+            {% if item in common %}
+                {% set price = 300 %}
+            {% elif item in rare %}
+                {% set price = 800 %}
+            {% elif item in epic %}
+                {% set price = 1500 %}
+            {% elif item in supergamble %}
+                {% set price = 3000 %}
+            {% endif %}
+            <div class="card" onclick="confirmBuy({{ loop.index0 }}, '{{ item }}')">
+                <img src="{{ url_for('static', filename='' + item + '.png') }}"alt="{{ item }}"style="width:100%; border-radius:8px; margin-bottom:10px;">
+                <div class="card-title">{{ item }}</div>
+                <div class="price">{{ price }}$</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p>Kauppa on tyhjä.</p>
+        {% endif %}
+    </div>
+
+    <div class="right-panel">
+            <h3>Tilastot</h3>
+        <div class="stats">
+            <p>🪙Raha: {{ session.get('raha', 0) }} | 🐍Kierros: {{ session.get('kierros', 0) }} | ⛰️Tavoite: {{ session.get('tavoite', 0) }}/1000</p>
+            <p>Perkit: {{ session.get('perklist', []) }}</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="popup-bg" id="popup-bg">
+    <div class="popup">
+        <h3 id="popup-text">Haluatko varmasti ostaa tämän?</h3>
+
+        <form id="buy-form" method="post" action="{{ url_for('osta_perk') }}">
+            <input type="hidden" name="index" id="perk-index">
+            <button type="submit">Kyllä</button>
+        </form>
+
+        <button onclick="closePopup()">Peruuta</button>
+    </div>
+</div>
+
+<script>
+    function confirmBuy(index, name) {
+        document.getElementById("perk-index").value = index;
+        document.getElementById("popup-text").innerText =
+            "Haluatko varmasti ostaa: " + name + "?";
+        document.getElementById("popup-bg").style.display = "flex";
+    }
+
+    function closePopup() {
+        document.getElementById("popup-bg").style.display = "none";
+    }
+</script>
+
+</body>
+</html>

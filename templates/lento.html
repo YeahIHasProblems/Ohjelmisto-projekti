@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lento</title>
+</head>
+<body>
+
+<h1>Lento</h1>
+
+{% if not session.get("double_active") %}
+    <form method="post">
+        <button type="submit" name="action" value="start">Lennä uuteen paikkaan</button>
+    </form>
+{% endif %}
+
+{% if session.get("double_active") %}
+    <p><strong>Uusi kohde:</strong> {{ session["lokaatio"]["name"] }}</p>
+    <p><strong>Palkka:</strong> {{ session["palkka"] }}</p>
+    <img src="{{ session['lippu'] }}">
+
+    {% if session.get("double_message") %}
+        <p>{{ session["double_message"] }}</p>
+    {% endif %}
+
+    <form method="post">
+        <button type="submit" name="action" value="double">Tuplaa</button>
+        <button type="submit" name="action" value="stop_double">Lopeta tuplaus</button>
+    </form>
+
+    <section class="box">
+        <header>
+            <p><strong>Sää kohteessa:</strong> {{ session["lokaatio"]["name"] }}</p>
+        </header>
+
+        <table id="weather">
+            <tr>
+                <td>Temperature</td>
+                <td>
+                    <img id="weather-icon" src="" alt="Current weather">
+                </td>
+                <td>Wind</td>
+            </tr>
+            <tr>
+                <td id="temperature">Loading...</td>
+                <td id="airport-conditions">Loading...</td>
+                <td id="airport-wind">Loading...</td>
+            </tr>
+        </table>
+    </section>
+
+   <script>
+    const latitude = {{ session["lokaatio"]["latitude_deg"] }};
+    const longitude = {{ session["lokaatio"]["longitude_deg"] }};
+
+    async function getCurrentWeather(latitude, longitude) {
+
+        const url =
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m,weather_code`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        document.getElementById("temperature").textContent =
+            data.current.temperature_2m + "°C";
+
+        document.getElementById("airport-wind").textContent =
+            data.current.wind_speed_10m + " m/s";
+
+        let weatherText = "Unknown";
+
+        const code = data.current.weather_code;
+
+        if (code === 0) weatherText = "Clear";
+        else if (code <= 3) weatherText = "Cloudy";
+        else if (code <= 48) weatherText = "Fog";
+        else if (code <= 67) weatherText = "Rain";
+        else if (code <= 77) weatherText = "Snow";
+        else if (code <= 99) weatherText = "Storm";
+
+        document.getElementById("airport-conditions").textContent = weatherText;
+    }
+
+    getCurrentWeather(latitude, longitude);
+</script>
+
+{% else %}
+    <p>Tuplaus päättyi.</p>
+
+    <a href="{{ url_for('index') }}">
+        <button>Palaa valikkoon</button>
+    </a>
+{% endif %}
+
+</body>
+</html>

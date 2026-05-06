@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sääkortti</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+  }
+
+  .card {
+    width: 260px;
+    padding: 20px;
+    margin-right: 100px;
+    border-radius: 25px;
+    background: linear-gradient(to bottom, #8fb9d8, #6fa6cc);
+    border: 2px solid #1e88c8;
+    color: #000;
+  }
+
+  .city {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+
+  .image-box {
+    height: 120px;
+    border-radius: 20px;
+    background-color: #1f5f78;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-bottom: 20px;
+    border: 2px solid #0d3c4d;
+  }
+
+  .image-box img {
+    max-width: 80%;
+    max-height: 80%;
+  }
+
+  .info {
+    font-size: 22px;
+    margin: 10px 0;
+  }
+</style>
+
+</head>
+<body>
+
+<div class="card">
+  <div class="city">{tähän tulee kaupungin nimi}</div>
+
+  <div class="image-box">
+    <!-- Voit lisätä kuvan tähän -->
+    <!-- <img src="kuva.png" alt="Sääkuva"> -->
+    Tähän tulee img
+  </div>
+
+  <div class="info">Sää:</div>
+  <div class="info">Tuuli:</div>
+</div>
+
+</body>
+</html>

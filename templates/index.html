@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Flight Game</title>
+    <style>
+        a, button { color: #fff; background: #333; padding: 8px 12px; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
+        a:hover, button:hover { background: #555; }
+        .stats { margin-bottom: 20px; padding: 10px; background: #222; border-radius: 4px; }
+        body {
+            background: #0f3b2e;
+            font-family: 'Trebuchet MS', sans-serif;
+            color: #f0e6ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-panel {
+            width: 260px;
+            background: #0d2f25;
+            padding: 20px;
+            border-right: 4px solid #1a4d3b;
+            color: #d8ffe9;
+        }
+
+        .right-panel {
+            width: 260px;
+            background: #0d2f25;
+            padding: 20px;
+            border-left: 4px solid #1a4d3b;
+            color: #d8ffe9;
+        }
+
+        .button {
+            display: block;
+            background: #0fa072;
+            padding: 12px;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            box-shadow: 0 0 10px #1a4d3b;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="left-panel">
+    <div class="stats">
+        <p>Raha: {{ session.get('raha', 0) }} | Kierros: {{ session.get('kierros', 0) }} | Tavoite: {{ session.get('tavoite', 0) }}/1000</p>
+        <p>Perkit: {{ session.get('perklist', []) }}</p>
+    </div>
+</div>
+<p>Valitse toiminto:</p>
+
+<p>
+    <a href="{{ url_for('lento') }}">Lennä toiseen paikkaan</a>
+</p>
+<p>
+    <a href="{{ url_for('kauppa_sivu') }}">Avaa kauppa</a>
+</p>
+<p>
+    <a href="{{ url_for('blackjack') }}">Pelaa blackjack</a>
+</p>
+</div>
+</body>
+</html>
