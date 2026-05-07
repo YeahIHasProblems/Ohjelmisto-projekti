@@ -9,6 +9,8 @@
             margin: 0;
             font-family: 'Bebas Neue', Impact, sans-serif;
             background: radial-gradient(circle, #2b0035 0%, #120014 70%);
+            height: 100%;
+            overflow: hidden;
         }
         .page {
             width: 100vw;
@@ -42,7 +44,11 @@
             cursor: pointer;
             color: #4a1b00;
             font-weight: bold;
-            font-size: 60px;
+            font-size: 4vh;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 16px;
+            border: 2px solid #4a1b00;
         }
         .location-card {
             width: 320px;
@@ -79,13 +85,14 @@
             justify-self: end;
             width: 360px;
             background: linear-gradient(180deg, rgba(45, 20, 80, 0.95), rgba(20, 5, 35, 0.95));
+            height:550px
         }
         .back-card {
             grid-column: 1;
             grid-row: 2;
             align-self: end;
             width: 430px;
-            height: 210px;
+            height: 22vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -102,7 +109,8 @@
             justify-self: end;
             align-self: end;
             width: 430px;
-            height: 210px;
+            gap:20px;
+            height: 22vh;
             background: linear-gradient(to bottom, #ffe259, #ffb700);
         }
         #weather-icon {
@@ -119,7 +127,7 @@
         }
         .back-button {
             margin: 0;
-            font-size: 60px;
+            font-size: 4vh;
             color: #4a1b00;
         }
         .map-card {
@@ -155,8 +163,8 @@
         .stats {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            font-size: 35px;
+            gap: 5px;
+            font-size: 2.5vh;
         }
         .tuplaus-gif {
             width: 1000px;
