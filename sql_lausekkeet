@@ -23,3 +23,8 @@ rare3         5          1        1
 common1       2          1        1
 common2       1          2        1
 common3       2          2        1
+
+ALTER TABLE game
+ADD COLUMN money INT(11) DEFAULT 1000,
+ADD COLUMN tavoite INT(11) DEFAULT 0,
+ADD COLUMN password VARCHAR(40) NOT NULL;
