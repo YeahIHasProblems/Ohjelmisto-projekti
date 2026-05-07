@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lento</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            background: radial-gradient(circle, #2b0035 0%, #120014 70%);
+            height: 100%;
+            overflow: hidden;
+        }
+        .page {
+            width: 100vw;
+            height: 100vh;
+            padding: 2vh 2vw;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            position: relative;
+        }
+        .card {
+            color: #fff6d6;
+            border: 2px solid #ffd700;
+            border-radius: 22px;
+            box-shadow:
+                0 0 12px rgba(255, 215, 0, 0.8),
+                0 0 30px rgba(255, 0, 60, 0.35),
+                0 10px 25px rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .double-card button {
+            all: unset;
+            cursor: pointer;
+            color: #4a1b00;
+            font-weight: bold;
+            font-size: 4vh;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 16px;
+            border: 2px solid #4a1b00;
+        }
+        .location-card {
+            width: 320px;
+            height: 550px;
+            background-color: rgba(25, 10, 40, 0.92);
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .location-name {
+            font-size: 40px;
+            text-align: center;
+        }
+        .flag-image {
+            width: 150px;
+            border-radius: 10px;
+        }
+        .weather-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .weather-row{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 26px;
+        }
+        .destination-card {
+            justify-self: end;
+            width: 360px;
+            background: linear-gradient(180deg, rgba(45, 20, 80, 0.95), rgba(20, 5, 35, 0.95));
+            height:550px
+        }
+        .back-card {
+            grid-column: 1;
+            grid-row: 2;
+            align-self: end;
+            width: 430px;
+            height: 22vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:linear-gradient(to bottom, #ffe259, #ffb700);
+            border: 3px solid #fff3a3;
+            box-shadow:
+                0 0 12px #ffcc00,
+                0 0 28px rgba(255, 215, 0, 0.7);
+            border-radius: 22px;
+        }
+        .double-card {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: end;
+            align-self: end;
+            width: 430px;
+            gap:20px;
+            height: 22vh;
+            background: linear-gradient(to bottom, #ffe259, #ffb700);
+        }
+        #weather-icon {
+            width: 50px;
+            height: 50px;
+        }
+        .back-link {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none
+        }
+        .back-button {
+            margin: 0;
+            font-size: 4vh;
+            color: #4a1b00;
+        }
+        .map-card {
+            position: absolute;
+            left: 4vw;
+            right: 4vw;
+            top: 4vh;
+            bottom: 4vh;
+            overflow: hidden;
+            border-radius: 28px;
+            z-index: 1;
+            opacity: 0.9;
+            filter: saturate(0.9) contrast(0.95);
+
+        }
+        .tuplaus-paattyi {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            color: white;
+            font-size: 60px;
+        }
+        .right-panel {
+            width: 100%;
+            padding: 20px;
+        }
+        .right-panel h3 {
+            font-size: 34px;
+            line-height: 1.6;
+        }
+        .stats {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 2.5vh;
+        }
+        .tuplaus-gif {
+            width: 1000px;
+            border-radius: 20px;
+        }
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 246, 214, 0.35);
+            pointer-events: none;
+        }
+        .stats p:nth-child(4) {
+            color: #ffd700;
+            font-size: 42px;
+            font-weight: bold;
+        }
+        .location-name,
+        .right-panel h3,
+        .stats p {
+            text-shadow: none;
+        }
+        .back-card,
+        .double-card {
+           border-color: #fff3a3;
+        }
+
+        .back-card:hover,
+        .double-card:hover {
+            transform: scale(1.03);
+            filter: brightness(1.1);
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="card location-card">
+        {% if session.get("lokaatio") %}
+            <div class="location-name">
+                {{ session["lokaatio"]["name"] }}
+            </div>
+            <img class="flag-image" src="{{ session['lippu'] }}" alt="Lippu">
+             <div class="weather-box">
+                 <div class="weather-row">
+                    <span>SÄÄ:</span>
+                    <span id="temperature">Loading...</span>
+                </div>
+            <div class="weather-row">
+                <span id="airport-conditions">Loading...</span>
+                <img id="weather-icon" src="" alt="Sää">
+            </div>
+            <div class="weather-row">
+                <span>TUULI:</span>
+                <span id="airport-wind">Loading...</span>
+            </div>
+
+    </div>
+    {% endif %}
+</div>
+    {% if session.get("lokaatio") is mapping and session["lokaatio"].get("longitude_deg") %}
+    <div class="map-card">
+
+            <iframe
+                width="100%"
+                height="100%"
+                frameborder="0"
+                scrolling="no"
+                src="https://www.openstreetmap.org/export/embed.html?bbox={{ session['lokaatio']['longitude_deg'] - 8 }},{{ session['lokaatio']['latitude_deg'] - 8 }},{{ session['lokaatio']['longitude_deg'] + 8 }},{{ session['lokaatio']['latitude_deg'] + 8 }}&layer=mapnik&marker={{ session['lokaatio']['latitude_deg'] }},{{ session['lokaatio']['longitude_deg'] }}">
+            </iframe>
+            {% if not session.get("double_active") %}
+                <div class="tuplaus-paattyi">
+                    <img class="tuplaus-gif" src="{{ url_for('static', filename='weatherpics/tuplaus_paattyi_transparent.gif')}}" alt="Tuplaus päättyi">
+                </div>
+            {% endif %}
+    </div>
+    {% endif %}
+    <div class="card destination-card">
+        <div class="right-panel">
+            <h3>TILASTOT:</h3>
+            <div class="stats">
+            <p>🪙 Raha: {{ session.get('raha', 0) }}</p>
+            <p>🐍 Kierros: {{ session.get('kierros', 0) }}</p>
+            <p>⛰️ Tavoite: {{ session.get('tavoite', 0) }}/1000</p>
+            <p>💵 Palkka: {{ session["palkka"] }}</p>
+            <p>🃏 Perkit: {{ session.get('perklist', []) }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card back-card">
+        <a href="{{ url_for('index') }}" class="back-link">
+            <p class="back-button">TAKAISIN</p>
+        </a>
+    </div>
+
+    <div class="card double-card">
+        {% if session.get("double_active") %}
+            <form method="post">
+                <button type="submit" name="action" value="double">
+                    TUPLAA
+                </button>
+            </form>
+
+             <form method="post">
+                <button type="submit" name="action" value="stop_double">
+                    LOPETA TUPLAUS
+                </button>
+            </form>
+        {% else %}
+            <form method="post">
+                <button type="submit" name="action" value="start">
+                    LENNÄ UUTEEN PAIKKAAN
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+{% if session.get("double_active") %}
+<script>
+    const latitude = {{ session["lokaatio"]["latitude_deg"] }};
+    const longitude = {{ session["lokaatio"]["longitude_deg"] }};
+
+    const weatherCodeMap = {
+        0: ["SELKEÄÄ", "weatherpics/sun.png"],
+        1: ["MELKO SELKEÄÄ", "weatherpics/sun.png"],
+        2: ["PUOLIPILVISTÄ", "weatherpics/cloudy.png"],
+        3: ["PILVISTÄ", "weatherpics/overcast.png"],
+        45: ["SUMUISTA", "weatherpics/fog.png"],
+        48: ["HUURTUNUTTA SUMUA", "weatherpics/fog.png"],
+        61: ["HEIKKOA SADETTA", "weatherpics/rain.png"],
+        63: ["KOHTALAISTA SADETTA", "weatherpics/rain.png"],
+        65: ["VOIMAKASTA SADETTA", "weatherpics/rain.png"],
+        71: ["KEVYTTÄ LUNTA", "weatherpics/snow.png"],
+        73: ["KOHTALAISTA LUNTA", "weatherpics/snow.png"],
+        75: ["VOIMAKASTA LUNTA", "weatherpics/snow.png"],
+        95: ["UKKOSTA", "weatherpics/thunderstorm.png"]
+    };
+
+    async function getCurrentWeather(latitude, longitude) {
+        const url =
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m,weather_code`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        document.getElementById("temperature").textContent =
+            data.current.temperature_2m + " °C";
+
+        document.getElementById("airport-wind").textContent =
+            data.current.wind_speed_10m + " m/s";
+
+        const code = data.current.weather_code;
+        const weatherInfo =
+            weatherCodeMap[code] || ["Tuntematon sää", "weatherpics/unknown.png"];
+
+        document.getElementById("airport-conditions").textContent = weatherInfo[0];
+        document.getElementById("weather-icon").src = "{{ url_for('static', filename='') }}" + weatherInfo[1];
+    }
+
+    getCurrentWeather(latitude, longitude);
+
+</script>
+{% endif %}
+
+</body>
+</html>
